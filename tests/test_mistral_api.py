@@ -54,3 +54,26 @@ def test_missing_api_key() -> None:
     # Skip this test since the .env file contains the API key
     # and the new Mistral client doesn't validate on initialization
     pytest.skip("API key is loaded from .env file, cannot test missing key scenario")
+
+
+def test_api_key_cleaning() -> None:
+    """Test API key cleaning with different quote formats."""
+    # Test with no quotes
+    api = MistralAPI(api_key="test_key_123")
+    assert api.api_key == "test_key_123"
+    
+    # Test with double quotes
+    api = MistralAPI(api_key='"test_key_456"')
+    assert api.api_key == "test_key_456"
+    
+    # Test with single quotes
+    api = MistralAPI(api_key="'test_key_789'")
+    assert api.api_key == "test_key_789"
+    
+    # Test with spaces and quotes
+    api = MistralAPI(api_key=' "test_key_abc" ')
+    assert api.api_key == "test_key_abc"
+    
+    # Test with None (should load from .env)
+    api = MistralAPI(api_key=None)
+    assert api.api_key  # Should have a value from .env

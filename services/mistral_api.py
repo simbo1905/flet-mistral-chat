@@ -17,11 +17,31 @@ class MistralAPI:
             api_key: Optional API key. If not provided, loads from .env.
         """
         load_dotenv()
-        self.api_key = api_key or os.getenv("MISTRAL_API_KEY")
+        self.api_key = self._clean_api_key(api_key or os.getenv("MISTRAL_API_KEY"))
         if not self.api_key:
             raise ValueError("MISTRAL_API_KEY not found in environment or .env file")
         
         self.client = Mistral(api_key=self.api_key)
+
+    def _clean_api_key(self, api_key: Optional[str]) -> str:
+        """Clean API key by removing surrounding quotes if present.
+        
+        Args:
+            api_key: API key potentially wrapped in quotes.
+            
+        Returns:
+            Cleaned API key without surrounding quotes.
+        """
+        if not api_key:
+            return ""
+        
+        # Remove surrounding single or double quotes
+        api_key = api_key.strip()
+        if (api_key.startswith('"') and api_key.endswith('"')) or \
+           (api_key.startswith("'") and api_key.endswith("'")):
+            api_key = api_key[1:-1]
+        
+        return api_key
 
     def list_models(self) -> Dict[str, Any]:
         """List available models from Mistral API.
