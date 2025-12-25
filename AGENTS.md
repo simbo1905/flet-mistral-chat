@@ -10,8 +10,34 @@ This is a Flet demonstration application showcasing various UI controls and inte
 
 - **Framework**: Flet 0.80.0 (Python UI framework powered by Flutter)
 - **Python Version**: 3.12+
-- **Package Manager**: uv
+- **Package Manager**: uv (DO NOT USE pip, poetry, or any other package manager)
 - **Asset Management**: Local assets stored in `assets/` directory
+
+## IMPORTANT: uv Project Guidelines
+
+**THIS IS A uv PROJECT. DO NOT POLLUTE IT WITH OTHER DEPENDENCY MANAGEMENT TOOLS.**
+
+### Working with uv
+
+1. **Install Dependencies**: Use `uv sync` to install dependencies from `pyproject.toml`
+2. **Run Applications**: Use `uv run <script.py>` to execute Python scripts
+3. **Add Dependencies**: Update `pyproject.toml` and run `uv sync`
+4. **Virtual Environment**: uv automatically manages a virtual environment in `.venv`
+
+### Forbidden Actions
+
+- ❌ Do NOT use `pip install`
+- ❌ Do NOT use `poetry`
+- ❌ Do NOT use `conda`
+- ❌ Do NOT create separate virtual environments
+- ❌ Do NOT modify `uv.lock` manually
+
+### Required Actions
+
+- ✅ Use `uv run main.py` to run the application
+- ✅ Use `uv sync` to update dependencies
+- ✅ Use `uv add <package>` to add new dependencies
+- ✅ Use `uv remove <package>` to remove dependencies
 
 ## Project Structure
 
@@ -68,12 +94,19 @@ Local assets must be:
 
 ## Development Guidelines
 
+### Project Setup
+
+1. **Always use uv**: This project uses `uv` for dependency management. Never use `pip`, `poetry`, or other tools.
+2. **Sync dependencies**: Run `uv sync` after pulling changes or modifying `pyproject.toml`.
+3. **Run the app**: Use `uv run main.py` to start the application.
+
 ### Adding New Controls
 
 1. Add control definitions within the appropriate `ft.ExpansionPanel`
 2. For interactive controls, create event handlers in the `main()` function
 3. Use state variables (with `nonlocal` if needed) to track control state
 4. Call `page.update()` after state changes to refresh the UI
+5. Test your changes with `uv run main.py`
 
 ### State Management
 
@@ -165,8 +198,10 @@ Potential areas for expansion:
 
 When working with this codebase:
 
-1. **Read before modifying**: Always read the current state of files
-2. **Test incrementally**: Make small changes and test frequently
-3. **Follow patterns**: Use existing code patterns for consistency
-4. **Document changes**: Update this file when adding new patterns
-5. **Check API versions**: Always verify API compatibility with Flet 0.80.0
+1. **Respect the uv setup**: NEVER use `pip`, `poetry`, or other dependency tools. Use `uv` exclusively.
+2. **Read before modifying**: Always read the current state of files
+3. **Test incrementally**: Make small changes and test frequently with `uv run main.py`
+4. **Follow patterns**: Use existing code patterns for consistency
+5. **Document changes**: Update this file when adding new patterns
+6. **Check API versions**: Always verify API compatibility with Flet 0.80.0
+7. **Keep it clean**: Do not introduce unnecessary dependencies or tools
