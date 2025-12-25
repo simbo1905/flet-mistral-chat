@@ -1,6 +1,7 @@
 import flet as ft
 
-def main(page: ft.Page):
+
+def main(page: ft.Page) -> None:
     page.title = "Preferences - Add-ons"
     page.theme_mode = ft.ThemeMode.DARK
 
@@ -10,7 +11,9 @@ def main(page: ft.Page):
         ft.NavigationRailDestination(icon=ft.icons.VIEW_IN_AR_OUTLINED, label="Viewport"),
         ft.NavigationRailDestination(icon=ft.icons.LIGHT_MODE_OUTLINED, label="Lights"),
         ft.NavigationRailDestination(icon=ft.icons.ANIMATION_OUTLINED, label="Animation"),
-        ft.NavigationRailDestination(icon=ft.icons.EXTENSION_OUTLINED, label="Add-ons", selected_icon=ft.icons.EXTENSION),
+        ft.NavigationRailDestination(
+            icon=ft.icons.EXTENSION_OUTLINED, label="Add-ons", selected_icon=ft.icons.EXTENSION
+        ),
         ft.NavigationRailDestination(icon=ft.icons.PALETTE_OUTLINED, label="Themes"),
         ft.NavigationRailDestination(icon=ft.icons.INPUT_OUTLINED, label="Input"),
         ft.NavigationRailDestination(icon=ft.icons.SYSTEM_SECURITY_UPDATE_OUTLINED, label="System"),
@@ -33,7 +36,9 @@ def main(page: ft.Page):
     )
 
     # Add-on List Item (Example)
-    def create_addon_item(name, description, version, file_path, enabled=True):
+    def create_addon_item(
+        name: str, description: str, version: str, file_path: str, enabled: bool = True
+    ) -> ft.Column:
         return ft.Column(
             [
                 ft.Row(
@@ -66,7 +71,10 @@ def main(page: ft.Page):
                 name="Blender MCP",
                 description="Connect Blender to Claude via MCP.",
                 version="1.2",
-                file_path="/Users/simon/Library/Application Support/Blender/5.0/scripts/addons/addon.py",
+                file_path=(
+                    "/Users/simon/Library/Application Support/"
+                    "Blender/5.0/scripts/addons/addon.py"
+                ),
                 enabled=True,
             ),
             create_addon_item(
@@ -106,5 +114,6 @@ def main(page: ft.Page):
             expand=True,
         )
     )
+
 
 ft.run(main)
