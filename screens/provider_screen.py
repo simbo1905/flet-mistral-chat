@@ -59,22 +59,22 @@ class ProviderScreen:
                 ft.Row(
                     controls=[
                         ft.IconButton(
-                            icon=ft.icons.SETTINGS,
+                            icon=ft.Icons.SETTINGS_OUTLINED,
                             tooltip="Provider Settings",
                             on_click=lambda e: print("Settings clicked"),
                         ),
                         ft.IconButton(
-                            icon=ft.icons.VIEW_MODULE,
+                            icon=ft.Icons.VIEW_MODULE_OUTLINED,
                             tooltip="MCP Config",
                             on_click=lambda e: print("MCP Config clicked"),
                         ),
                         ft.IconButton(
-                            icon=ft.icons.CHAT,
+                            icon=ft.Icons.CHAT_OUTLINED,
                             tooltip="Open Chat",
                             on_click=self.open_chat_window,
                         ),
                         ft.IconButton(
-                            icon=ft.icons.PLACEHOLDER,
+                            icon=ft.Icons.HELP_OUTLINED,
                             tooltip="Placeholder",
                             on_click=lambda e: print("Placeholder clicked"),
                         ),
@@ -118,14 +118,14 @@ class ProviderScreen:
                             content=ft.Text(provider.name[0], size=16, weight=ft.FontWeight.BOLD),
                             width=30,
                             height=30,
-                            bgcolor=ft.colors.BLUE_200,
+                            bgcolor=ft.Colors.BLUE_200,
                             border_radius=15,
                             alignment=ft.Alignment.CENTER,
                         ),
                         ft.Text(provider.name, size=16),
                         ft.IconButton(
-                            icon=ft.icons.DELETE_OUTLINE,
-                            icon_color=ft.colors.RED_500,
+                            icon=ft.Icons.DELETE_OUTLINED,
+                            icon_color=ft.Colors.RED_500,
                             tooltip=f"Delete {provider.name}",
                             on_click=lambda e, name=provider.name: self.confirm_delete_provider(name),
                         ),
@@ -256,9 +256,9 @@ class ProviderScreen:
                 ),
                 
                 # Test button
-                ft.ElevatedButton(
-                    text="Test",
-                    icon=ft.icons.PLAY_ARROW,
+                ft.Button(
+                    content=ft.Text("Test"),
+                    icon=ft.Icons.PLAY_ARROW,
                     on_click=self.test_provider_settings,
                     expand=True,
                 ),
