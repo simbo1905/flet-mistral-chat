@@ -3,7 +3,7 @@
 import pytest
 import flet as ft
 from screens.provider_screen import ProviderScreen
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 
 
 def test_provider_screen_initialization() -> None:
@@ -108,3 +108,72 @@ def test_provider_form_fields() -> None:
     # Verify we have a test button
     buttons = [c for c in provider_form.controls if isinstance(c, ft.Button)]
     assert len(buttons) == 1, f"Expected 1 button, got {len(buttons)}"
+
+
+def test_test_provider_settings_success() -> None:
+    """Test that test_provider_settings shows success banner."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    page.banner = None
+    
+    # Initialize provider screen
+    provider_screen = ProviderScreen(page)
+    
+    # Mock the API to return success
+    provider_screen.mistral_api.list_models = Mock(return_value={"data": [{"id": "model1"}, {"id": "model2"}]})
+    
+    # Create a mock event
+    mock_event = Mock()
+    
+    # Call test_provider_settings
+    provider_screen.test_provider_settings(mock_event)
+    
+    # Verify banner was set
+    assert page.banner is not None
+    assert page.banner.open is True
+    assert "Successfully connected" in page.banner.content.value
+    assert "2 models" in page.banner.content.value
+    assert page.banner.bgcolor == ft.Colors.GREEN_100
+
+
+def test_test_provider_settings_error() -> None:
+    """Test that test_provider_settings shows error banner."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    page.banner = None
+    
+    # Initialize provider screen
+    provider_screen = ProviderScreen(page)
+    
+    # Mock the API to raise an error
+    provider_screen.mistral_api.list_models = Mock(side_effect=Exception("API error"))
+    
+    # Create a mock event
+    mock_event = Mock()
+    
+    # Call test_provider_settings
+    provider_screen.test_provider_settings(mock_event)
+    
+    # Verify error banner was set
+    assert page.banner is not None
+    assert page.banner.open is True
+    assert "Failed to connect" in page.banner.content.value
+    assert "API error" in page.banner.content.value
+    assert page.banner.bgcolor == ft.Colors.RED_100
+
+
+def test_close_banner() -> None:
+    """Test that _close_banner closes the banner."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    page.banner = Mock()
+    page.banner.open = True
+    
+    # Initialize provider screen
+    provider_screen = ProviderScreen(page)
+    
+    # Call _close_banner
+    provider_screen._close_banner()
+    
+    # Verify banner was closed
+    assert page.banner.open is False

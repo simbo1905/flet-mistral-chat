@@ -323,32 +323,45 @@ class ProviderScreen:
         """
         try:
             models = self.mistral_api.list_models()
-            print(f"Successfully connected to Mistral API. Found {len(models.get('data', []))} models.")
+            model_count = len(models.get('data', []))
+            print(f"Successfully connected to Mistral API. Found {model_count} models.")
             
-            # Show success dialog
-            dialog = ft.AlertDialog(
-                title=ft.Text("Success!"),
-                content=ft.Text("Provider settings are valid and API connection successful."),
+            # Show success banner
+            self.page.banner = ft.Banner(
+                bgcolor=ft.Colors.GREEN_100,
+                leading=ft.Icon(ft.Icons.CHECK_CIRCLE_OUTLINED, color=ft.Colors.GREEN_700, size=40),
+                content=ft.Text(
+                    f"✓ Successfully connected to Mistral API! Found {model_count} models.",
+                    size=16,
+                    weight=ft.FontWeight.BOLD,
+                ),
                 actions=[
-                    ft.TextButton("OK", on_click=lambda e: self._close_dialog(dialog)),
+                    ft.TextButton("OK", on_click=lambda e: self._close_banner()),
                 ],
             )
-            
-            self.page.dialog = dialog
-            dialog.open = True
+            self.page.banner.open = True
             self.page.update()
         except Exception as ex:
             print(f"Error testing provider: {str(ex)}")
             
-            # Show error dialog
-            dialog = ft.AlertDialog(
-                title=ft.Text("Error"),
-                content=ft.Text(f"Failed to connect: {str(ex)}"),
+            # Show error banner
+            self.page.banner = ft.Banner(
+                bgcolor=ft.Colors.RED_100,
+                leading=ft.Icon(ft.Icons.ERROR_OUTLINED, color=ft.Colors.RED_700, size=40),
+                content=ft.Text(
+                    f"✗ Failed to connect: {str(ex)}",
+                    size=16,
+                    weight=ft.FontWeight.BOLD,
+                ),
                 actions=[
-                    ft.TextButton("OK", on_click=lambda e: self._close_dialog(dialog)),
+                    ft.TextButton("OK", on_click=lambda e: self._close_banner()),
                 ],
             )
-            
-            self.page.dialog = dialog
-            dialog.open = True
+            self.page.banner.open = True
+            self.page.update()
+
+    def _close_banner(self) -> None:
+        """Close the banner."""
+        if self.page.banner:
+            self.page.banner.open = False
             self.page.update()
