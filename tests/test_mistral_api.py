@@ -1,11 +1,11 @@
 """Tests for Mistral API service."""
 
 import os
+
 import pytest
 from dotenv import load_dotenv
 
 from services.mistral_api import MistralAPI
-
 
 # Load environment variables
 load_dotenv()
@@ -32,12 +32,12 @@ def test_chat_completion(mistral_api: MistralAPI) -> None:
     """Test chat completion endpoint."""
     messages = [{"role": "user", "content": "Hello! What is your name?"}]
     response = mistral_api.chat_completion(messages)
-    
+
     assert "choices" in response
     assert len(response["choices"]) > 0
     assert "message" in response["choices"][0]
     assert "content" in response["choices"][0]["message"]
-    
+
     print(f"Received response: {response['choices'][0]['message']['content'][:50]}...")
 
 
@@ -61,19 +61,19 @@ def test_api_key_cleaning() -> None:
     # Test with no quotes
     api = MistralAPI(api_key="test_key_123")
     assert api.api_key == "test_key_123"
-    
+
     # Test with double quotes
     api = MistralAPI(api_key='"test_key_456"')
     assert api.api_key == "test_key_456"
-    
+
     # Test with single quotes
     api = MistralAPI(api_key="'test_key_789'")
     assert api.api_key == "test_key_789"
-    
+
     # Test with spaces and quotes
     api = MistralAPI(api_key=' "test_key_abc" ')
     assert api.api_key == "test_key_abc"
-    
+
     # Test with None (should load from .env)
     api = MistralAPI(api_key=None)
     assert api.api_key  # Should have a value from .env

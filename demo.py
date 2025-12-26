@@ -491,7 +491,7 @@ def main(page: ft.Page):
             list_controls,
             navigation_controls,
             overlay_controls,
-            
+
         ],
         expand_icon_color=ft.Colors.BLUE,
     )

@@ -83,3 +83,5 @@ Thumbs.db
 
 # Local assets (if not needed in repo)
 # assets/
+
+.tmp/

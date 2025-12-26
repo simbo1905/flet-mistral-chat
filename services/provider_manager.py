@@ -1,7 +1,6 @@
 """Provider management service."""
 
-from typing import Dict, List, Optional
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass
@@ -26,7 +25,7 @@ class ProviderManager:
 
     def __init__(self) -> None:
         """Initialize provider manager."""
-        self.providers: Dict[str, ProviderSettings] = {}
+        self.providers: dict[str, ProviderSettings] = {}
 
     def add_provider(self, settings: ProviderSettings) -> None:
         """Add a new provider.
@@ -50,7 +49,7 @@ class ProviderManager:
             return True
         return False
 
-    def get_provider(self, name: str) -> Optional[ProviderSettings]:
+    def get_provider(self, name: str) -> ProviderSettings | None:
         """Get provider by name.
         
         Args:
@@ -61,7 +60,7 @@ class ProviderManager:
         """
         return self.providers.get(name)
 
-    def list_providers(self) -> List[ProviderSettings]:
+    def list_providers(self) -> list[ProviderSettings]:
         """List all providers.
         
         Returns:

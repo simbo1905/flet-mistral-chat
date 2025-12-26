@@ -3,9 +3,10 @@
 import argparse
 import logging
 import sys
-import flet as ft
-from screens.provider_screen import ProviderScreen
 
+import flet as ft
+
+from screens.provider_screen import ProviderScreen
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -35,15 +36,15 @@ def main(page: ft.Page) -> None:
     page.title = "Mistral AI Provider Settings"
     page.theme_mode = ft.ThemeMode.LIGHT
     page.padding = 0
-    
+
     # Initialize provider screen
     logger.info("Initializing provider screen")
     provider_screen = ProviderScreen(page)
-    
+
     # Add the screen to the page
     logger.info("Building and adding provider screen to page")
     page.add(provider_screen.build())
-    
+
     logger.info("Application started successfully")
 
 
@@ -57,10 +58,10 @@ if __name__ == "__main__":
         help="Set the logging level (default: INFO)",
     )
     args = parser.parse_args()
-    
+
     # Setup logging
     setup_logging(args.log_level)
-    
+
     # Run the application
     logger.info(f"Running application with log level: {args.log_level}")
     ft.run(main)
