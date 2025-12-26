@@ -3,6 +3,7 @@
 import pytest
 import flet as ft
 from screens.provider_screen import ProviderScreen
+from screens.chat_screen import ChatScreen
 from unittest.mock import Mock, MagicMock
 
 
@@ -177,3 +178,77 @@ def test_close_banner() -> None:
     
     # Verify banner was closed
     assert page.banner.open is False
+
+
+def test_chat_screen_initialization() -> None:
+    """Test that ChatScreen can be initialized."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    
+    # This should not raise an exception
+    chat_screen = ChatScreen(page)
+    
+    # Verify the screen was initialized
+    assert chat_screen is not None
+    assert chat_screen.page == page
+    assert chat_screen.mistral_api is not None
+    assert len(chat_screen.messages) == 0
+
+
+def test_chat_screen_build() -> None:
+    """Test that ChatScreen.build() works without errors."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    
+    # Initialize chat screen
+    chat_screen = ChatScreen(page)
+    
+    # This should not raise an exception
+    dialog = chat_screen.build()
+    
+    # Verify the dialog is an AlertDialog
+    assert isinstance(dialog, ft.AlertDialog)
+    assert dialog.title.value == "Mistral AI Chat"
+    
+    # Verify the dialog has content
+    assert dialog.content is not None
+    assert isinstance(dialog.content, ft.Column)
+
+
+def test_chat_screen_icons() -> None:
+    """Test that all chat screen icons are valid."""
+    # Create a mock page
+    page = Mock(spec=ft.Page)
+    
+    # Initialize chat screen
+    chat_screen = ChatScreen(page)
+    
+    # Build the dialog
+    dialog = chat_screen.build()
+    
+    # Get the content column
+    content = dialog.content
+    assert isinstance(content, ft.Column)
+    
+    # Find the row with the input field and send button
+    input_row = None
+    for control in content.controls:
+        if isinstance(control, ft.Row):
+            input_row = control
+            break
+    
+    assert input_row is not None, "Input row not found"
+    
+    # Find the send button
+    send_button = None
+    for control in input_row.controls:
+        if isinstance(control, ft.IconButton):
+            send_button = control
+            break
+    
+    assert send_button is not None, "Send button not found"
+    
+    # Verify the icon is valid
+    icon = send_button.icon
+    assert hasattr(icon, 'name'), f"Invalid icon: {icon}"
+    assert hasattr(ft.Icons, icon.name), f"Invalid icon name: {icon.name}"

@@ -45,7 +45,7 @@ class ChatScreen:
         
         # Send button
         send_button = ft.IconButton(
-            icon=ft.icons.SEND,
+            icon=ft.Icons.SEND,
             on_click=lambda e: self.send_message(input_field.value, input_field, message_list),
         )
         
