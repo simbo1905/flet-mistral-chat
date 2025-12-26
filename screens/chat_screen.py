@@ -1,9 +1,14 @@
 """Chat window screen."""
 
+import logging
 import flet as ft
 from typing import Dict, List
 
 from services.mistral_api import MistralAPI
+
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 
 
@@ -86,7 +91,10 @@ class ChatScreen:
             message_list: Message list control.
         """
         if not message.strip():
+            logger.info("Empty message, not sending")
             return
+        
+        logger.info(f"Sending message: {message}")
         
         # Add user message to UI
         user_message = ft.Container(
@@ -118,8 +126,10 @@ class ChatScreen:
         
         # Call Mistral API
         try:
+            logger.info("Calling Mistral API for chat completion")
             # Get response from API
             response = self.mistral_api.chat_completion(self.messages)
+            logger.info("Received response from Mistral API")
             
             # Extract assistant message
             assistant_message = response.get("choices", [{}])[0].get("message", {}).get("content", "")

@@ -1,11 +1,16 @@
 """Provider settings screen."""
 
+import logging
 import flet as ft
 from typing import Callable, Optional
 
 from services.mistral_api import MistralAPI
 from services.provider_manager import ProviderManager, ProviderSettings
 from screens.chat_screen import ChatScreen
+
+
+# Configure logging
+logger = logging.getLogger(__name__)
 
 
 class ProviderScreen:
@@ -61,12 +66,12 @@ class ProviderScreen:
                         ft.IconButton(
                             icon=ft.Icons.SETTINGS_OUTLINED,
                             tooltip="Provider Settings",
-                            on_click=lambda e: print("Settings clicked"),
+                            on_click=lambda e: logger.info("Settings icon clicked"),
                         ),
                         ft.IconButton(
                             icon=ft.Icons.VIEW_MODULE_OUTLINED,
                             tooltip="MCP Config",
-                            on_click=lambda e: print("MCP Config clicked"),
+                            on_click=lambda e: logger.info("MCP Config icon clicked"),
                         ),
                         ft.IconButton(
                             icon=ft.Icons.CHAT_OUTLINED,
@@ -76,7 +81,7 @@ class ProviderScreen:
                         ft.IconButton(
                             icon=ft.Icons.HELP_OUTLINED,
                             tooltip="Placeholder",
-                            on_click=lambda e: print("Placeholder clicked"),
+                            on_click=lambda e: logger.info("Placeholder icon clicked"),
                         ),
                     ],
                     alignment=ft.MainAxisAlignment.END,
@@ -273,11 +278,13 @@ class ProviderScreen:
         Args:
             e: Control event.
         """
+        logger.info("Opening chat window")
         chat_screen = ChatScreen(self.page)
         dialog = chat_screen.build()
         self.page.dialog = dialog
         dialog.open = True
         self.page.update()
+        logger.info("Chat window opened successfully")
 
     def confirm_delete_provider(self, name: str) -> None:
         """Show delete confirmation dialog.
@@ -321,10 +328,11 @@ class ProviderScreen:
         Args:
             e: Control event.
         """
+        logger.info("Testing provider settings")
         try:
             models = self.mistral_api.list_models()
             model_count = len(models.get('data', []))
-            print(f"Successfully connected to Mistral API. Found {model_count} models.")
+            logger.info(f"Successfully connected to Mistral API. Found {model_count} models.")
             
             # Show success banner
             self.page.banner = ft.Banner(
